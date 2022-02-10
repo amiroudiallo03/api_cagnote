@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cagnote_api.apps.CagnoteAppConfig',
+    'cagnote_app.apps.CagnoteAppConfig',
     'rest_framework',
     
 ]
