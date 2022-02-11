@@ -1,3 +1,4 @@
+from email import message
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -10,8 +11,8 @@ from . import models
 def academician_exists(register_number: str):
     try:
         academician = models.Academician.objects.get(register_number=register_number)
-        return True, academician
-    except academician.DoesNotExist: return False, None
+        return True
+    except models.Academician.DoesNotExist: return False, None
 
 @api_view(['GET','POST'])
 def api_academiciens(request):
@@ -21,11 +22,17 @@ def api_academiciens(request):
         serializer = AcademicianSerializer(academician, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
-        serializer = AcademicianSerializer(data=request.data)
-        print("serailizer", serializer)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'Enregistrement éffectué avec succes'})
+    if request.method == 'POST':
+
+        if academician_exists(request.data.get('register_number')):
+            print('verify')
+            message = 'Academicien déja enregistré'
+            return Response({'message': message,'succes':False})
+        else:
+            serializer = AcademicianSerializer(data=request.data)
+            print('serialize')
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'message': 'Enregistrement éffectué avec succes', 'sucess':True})
     
         return Response({"message":'Aucun enregistrement éffectué'})
