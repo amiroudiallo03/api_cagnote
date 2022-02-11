@@ -26,6 +26,7 @@ def api_academiciens(request):
 
     if request.method == 'POST':
         serializer = AcademicianSerializer(data=request.data)
+        print(serializer["register_number"])
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Enregistrement éffectué avec succes'})
