@@ -40,6 +40,39 @@ def api_academiciens(request):
     return Response({"message":'bienvenue a oda'})
 
 
+@api_view(['GET','PUT','DELETE'])
+def api_academician(request, register_number):
+
+    try:
+        academician = models.Academician.objects.get(register_number=register_number)
+    except models.Academician.DoesNotExist:
+        message = 'Aucun academiciaen rétrouvé'
+        return Response({'message': message, 'succes':False})
+
+    if request.method == 'GET':
+        serializer = AcademicianSerializer(academician)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = AcademicianSerializer(academician, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            message = 'Modification éffectuée avec succès.'
+            return Response({"message": message, "succes":'succes'})
+
+        return Response({"message":'Aucune modifications éffectué'})
+
+    elif request.method == "DELETE":
+        academician.delete()
+    message = 'Académicien bien supprimé !'
+    success = True
+    return Response({"message":message, "success": success})
+    
+
+
+
+
+
 class ReasonsAPIView(APIView):
     def get(self, request):
         reasons = models.Reason.objects.all()
