@@ -1,12 +1,15 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .serializers import AcademicianSerializer, ReasonSerializer, PaymentSerializer
+from .serializers import AcademicianSerializer, ReasonSerializer, PaymentSerializer, CaisseSerializer
 from . import models
 from datetime import date
 from django.db.models import Q
+import json
+
 
 # Create your views here.
 
@@ -121,7 +124,17 @@ def payment_by_date(request):
         payment = models.Payment.objects.filter(Q(payment_date=date_payment)|Q(reason=reason))
         serializer = PaymentSerializer(payment, many=True)
         return Response(serializer.data)
-       
+import re
+    
+@api_view(['GET'])
+def api_caisse(request):
+    if request.method == 'GET':
+        payment = models.Payment.objects.values_list('montant', flat=True)
+        caisse = str(payment)
+        montant = re.findall('\d+', caisse)
+        box = [int(i) for i in montant]
+        montant_caisse = sum(box)
+        return Response({"montant_caisse": f'{montant_caisse}'})
 
 
 

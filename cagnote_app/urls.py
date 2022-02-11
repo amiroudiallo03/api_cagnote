@@ -10,4 +10,5 @@ urlpatterns = [
     path('academicians/<str:register_number>', views.api_academician),
     path('payment', views.api_payment),
     path('payment/paymentbydate', views.payment_by_date),
+    path('payment/api_caisse', views.api_caisse),
 ]

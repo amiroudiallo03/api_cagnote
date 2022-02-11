@@ -14,4 +14,4 @@ class ReasonAdmin(admin.ModelAdmin):
 
 @admin.register(models.Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['montant', 'payment_date', 'reason']
+    list_display = ['academician','reason','montant', 'payment_date', 'reason']
