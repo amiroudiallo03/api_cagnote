@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cagnote_app.apps.CagnoteAppConfig',
     'rest_framework',
+    'drf_yasg',
     
 ]
 

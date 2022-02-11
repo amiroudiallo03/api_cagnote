@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .serializers import AcademicianSerializer, ReasonSerializer, PaymentSerializer
 from . import models
+import json
 
 # Create your views here.
 
@@ -45,3 +46,56 @@ class ReasonsAPIView(APIView):
         serializer = ReasonSerializer(reasons, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(self, request):
+        message = ''
+        success = False
+        if not request.data.get('name'):
+            message = 'Veuillez remplir le champ requis !'
+            return Response({'message': message, success: success}, status=status.HTTP_200_OK)
+        # elif len(request.data.keys()) > 1:
+        #     message = 'Veuillez envoyer uniquement le nom du motif !'
+        #     return Response({'message': message, 'status':status}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            if models.Reason.objects.filter(name=request.data.get('name').lower()).exists():
+                message = 'Ce motif est déjà enregistré'
+                return Response({'message': message, success: success}, status=status.HTTP_200_OK)
+            else:
+                models.Reason.objects.create(name=request.data.get('name').lower())
+                message = 'Motif bien enregistré.'
+                success = True
+                
+                return Response({'message': message, success: success}, status.HTTP_201_CREATED)
+
+
+class ReasonAPIView(APIView):
+    def get(self, request, pk):
+        message = ''
+        success = False
+        if not models.Reason.objects.filter(pk=pk).exists():
+            message = "Ce motif n'existe pas !"
+            
+            return Response({'message': message, 'success':success}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            reason = models.Reason.objects.get(pk=pk)
+            serializer = ReasonSerializer(reason)
+            
+            return Response(serializer.data, status=status.HTTP_200_OK)
+    def put(self, request, pk):
+        message = ''
+        success = False
+        if not models.Reason.objects.filter(pk=pk).exists():
+            message = "Ce motif n'existe pas !"
+            
+            return Response({'message': message, 'success':success}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            if not request.data.get('name'):
+                message = "Veuillez remplir le champ requis !"
+                
+                return Response({'message': message, 'success':success}, status=status.HTTP_200_OK)
+            else:
+                reason = models.Reason.objects.filter(pk=pk)
+                reason.update(name=request.data.get('name'))
+                message = 'Motif bien modifié !'
+                success = True
+                
+                return Response({'message': message, 'success':success}, status=status.HTTP_200_OK)
