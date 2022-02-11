@@ -43,11 +43,12 @@ class Payment(Base):
     academician = models.ForeignKey(Academician, on_delete=models.CASCADE)
     reason = models.ForeignKey(Reason, on_delete=models.CASCADE)
     montant = models.DecimalField( max_digits=10, decimal_places=2)
-    payment_date = models.DateField(auto_now=True) 
-    payment_hour = models.TimeField(auto_now=True)
+    payment_date = models.DateField(auto_now_add=True) 
+    payment_hour = models.TimeField(auto_now_add=True)
     
     class Meta:
         verbose_name = 'paiement'
+        constraints = [models.UniqueConstraint(fields=['academician', 'payment_date', 'reason'], name='payment_unique')]
     
     def __str__(self):
         return f"{self.academician}, {self.reason}, {self.montant}"

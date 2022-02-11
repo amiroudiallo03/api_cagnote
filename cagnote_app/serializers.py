@@ -1,3 +1,4 @@
+from dataclasses import field
 from cagnote_app.models import Academician, Reason, Payment
 from rest_framework import serializers
 
@@ -18,3 +19,9 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         exclude = ['date_add','date_update','status']
+
+class PaymentRankSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model: Payment
+        fields =  ['academician',]
+     
