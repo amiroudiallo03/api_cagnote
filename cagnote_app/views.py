@@ -16,18 +16,15 @@ def academician_exists(register_number: str):
 
 @api_view(['GET','POST'])
 def api_academiciens(request):
-    try:
-        academician = models.Academician.objects.all()
-    except models.Academician.DoesNotExist:
-        return Response({"message": "Aucun academicien rétrouvé"})
 
     if request.method == 'GET':
+        academician = models.Academician.objects.all()
         serializer = AcademicianSerializer(academician, many=True)
         return Response(serializer.data)
 
-    if request.method == 'POST':
+    elif request.method == 'POST':
         serializer = AcademicianSerializer(data=request.data)
-        print(serializer["register_number"])
+        print("serailizer", serializer)
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Enregistrement éffectué avec succes'})
