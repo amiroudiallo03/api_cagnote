@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from .serializers import AcademicianSerializer, ReasonSerializer, PaymentSerializer
 from . import models
 from datetime import date
+from django.db.models import Q
 
 # Create your views here.
 
@@ -111,7 +112,18 @@ def api_payment(request):
                     success = False
                     return Response({'message': message, 'success': success})
 
+@api_view(['GET'])
+def payment_by_date(request):
     
+    if request.method == 'GET':
+        date_payment = request.data.get('date_payment')
+        reason = request.data.get('reason')
+        payment = models.Payment.objects.filter(Q(payment_date=date_payment)|Q(reason=reason))
+        serializer = PaymentSerializer(payment, many=True)
+        return Response(serializer.data)
+       
+
+
 
 
         
