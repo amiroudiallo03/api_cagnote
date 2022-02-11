@@ -136,7 +136,7 @@ class ReasonsAPIView(APIView):
         reasons = models.Reason.objects.all()
         serializer = ReasonSerializer(reasons, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
- 
+
     def post(self, request):
         message = ''
         success = False
@@ -190,3 +190,17 @@ class ReasonAPIView(APIView):
                 success = True
                 
                 return Response({'message': message, 'success':success}, status=status.HTTP_200_OK)
+    def delete(self, request, pk):
+        message = ''
+        success = False
+        if not models.Reason.objects.filter(pk=pk).exists():
+            message = "Ce motif n'existe pas !"
+            
+            return Response({'message': message, 'success':success}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            reason = models.Reason.objects.filter(pk=pk)
+            reason.delete()
+            message = 'Motif bien supprimé.'
+            success = True
+            
+            return Response({'message': message, 'success':success}, status=status.HTTP_200_OK)
