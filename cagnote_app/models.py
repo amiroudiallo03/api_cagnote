@@ -51,5 +51,6 @@ class Payment(Base):
     
     def __str__(self):
         return f"{self.academician}, {self.reason}, {self.montant}"
+    
 
 
