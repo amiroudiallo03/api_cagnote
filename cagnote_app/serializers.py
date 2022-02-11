@@ -22,6 +22,11 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 class PaymentRankSerializer(serializers.ModelSerializer):
     class Meta: 
-        model: Payment
+        model = Payment
         fields =  ['academician',]
+
+class CaisseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ['montant',]
      
