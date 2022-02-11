@@ -1,4 +1,3 @@
-from email import message
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -6,7 +5,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .serializers import AcademicianSerializer, ReasonSerializer, PaymentSerializer
 from . import models
-import json
+from datetime import date
 
 # Create your views here.
 
@@ -14,7 +13,7 @@ def academician_exists(register_number: str):
     try:
         academician = models.Academician.objects.get(register_number=register_number)
         return True
-    except models.Academician.DoesNotExist: return False, None
+    except models.Academician.DoesNotExist: return False
 
 @api_view(['GET','POST'])
 def api_academiciens(request):
@@ -46,7 +45,7 @@ def api_academician(request, register_number):
     try:
         academician = models.Academician.objects.get(register_number=register_number)
     except models.Academician.DoesNotExist:
-        message = 'Aucun academiciaen rétrouvé'
+        message = 'Aucun academicien rétrouvé'
         return Response({'message': message, 'succes':False})
 
     if request.method == 'GET':
@@ -68,8 +67,55 @@ def api_academician(request, register_number):
     success = True
     return Response({"message":message, "success": success})
     
+@api_view(['GET','POST'])
+def api_payment(request):
+    message = ""
+    success = False
+    if request.method == 'GET':
+        payment = models.Payment.objects.all()
+        serializer = PaymentSerializer(payment, many=True) 
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        matricule = request.data.get('register_number')
+        try:
+            academicien = models.Academician.objects.get(register_number=matricule)
+        except:
+            messages = 'Erreur: Académicien introuvable !'
+            return Response({'message': messages, 'success': success})
+        else:
+           
+            #academicien = models.Academician.objects.get(register_number=matricule)
+            motif_id = request.data.get('reason')
+            reason = models.Reason.objects.filter(id=motif_id)
+            if not models.Reason.objects.filter(id=motif_id).exists():
+                message = 'Motif inexistant'
+                return Response({"message": message, 'success': success})
+            #if models.Payment.objects.filter(academician=academicien).exists():
+            #    message = "Payment déjà éffectué pour ce motif aujourd'hui "
+            #    return Response({"message":message, "success": success})
+            else:
+                try:
+                    motif = models.Reason.objects.get(id=motif_id)
+                    pay = models.Payment.objects.create(
+                    academician=academicien,
+                    reason = motif,
+                    montant = request.data.get('montant')
+                    )
+                    pay.save()
+                    message = 'Payment effectué avec success'
+                    success = True
+                    return Response({'message': message, 'success': success})
+                except:
+                    message = 'Payment déjà éffectué pour ce motif'
+                    success = False
+                    return Response({'message': message, 'success': success})
+
+    
 
 
+        
+    
 
 
 
@@ -77,8 +123,8 @@ class ReasonsAPIView(APIView):
     def get(self, request):
         reasons = models.Reason.objects.all()
         serializer = ReasonSerializer(reasons, many=True)
-        
         return Response(serializer.data, status=status.HTTP_200_OK)
+ 
     def post(self, request):
         message = ''
         success = False
