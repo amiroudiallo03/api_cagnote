@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 from .serializers import AcademicianSerializer, ReasonSerializer, PaymentSerializer
 from . import models
 
@@ -35,4 +36,12 @@ def api_academiciens(request):
                 serializer.save()
                 return Response({'message': 'Enregistrement éffectué avec succes', 'sucess':True})
     
-        return Response({"message":'Aucun enregistrement éffectué'})
+    return Response({"message":'bienvenue a oda'})
+
+
+class ReasonsAPIView(APIView):
+    def get(self, request):
+        reasons = models.Reason.objects.all()
+        serializer = ReasonSerializer(reasons, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
