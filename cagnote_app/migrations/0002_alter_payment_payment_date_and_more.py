@@ -6,22 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cagnote_app', '0001_initial'),
+        ("cagnote_app", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='payment',
-            name='payment_date',
+            model_name="payment",
+            name="payment_date",
             field=models.DateField(auto_now_add=True),
         ),
         migrations.AlterField(
-            model_name='payment',
-            name='payment_hour',
+            model_name="payment",
+            name="payment_hour",
             field=models.TimeField(auto_now_add=True),
         ),
         migrations.AddConstraint(
-            model_name='payment',
-            constraint=models.UniqueConstraint(fields=('academician', 'payment_date', 'reason'), name='payment_unique'),
+            model_name="payment",
+            constraint=models.UniqueConstraint(
+                fields=("academician", "payment_date", "reason"), name="payment_unique"
+            ),
         ),
     ]

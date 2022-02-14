@@ -8,61 +8,119 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Academician',
+            name="Academician",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date_add', models.DateField(auto_now_add=True)),
-                ('date_update', models.DateField(auto_now=True)),
-                ('status', models.BooleanField(default=True)),
-                ('last_name', models.CharField(blank=True, max_length=30, verbose_name='nom')),
-                ('first_name', models.CharField(blank=True, max_length=40, verbose_name='prenom')),
-                ('register_number', models.CharField(blank=True, max_length=30, verbose_name='matricule')),
-                ('picture', models.FileField(blank=True, upload_to='pictures', verbose_name='photos')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date_add", models.DateField(auto_now_add=True)),
+                ("date_update", models.DateField(auto_now=True)),
+                ("status", models.BooleanField(default=True)),
+                (
+                    "last_name",
+                    models.CharField(blank=True, max_length=30, verbose_name="nom"),
+                ),
+                (
+                    "first_name",
+                    models.CharField(blank=True, max_length=40, verbose_name="prenom"),
+                ),
+                (
+                    "register_number",
+                    models.CharField(
+                        blank=True, max_length=30, verbose_name="matricule"
+                    ),
+                ),
+                (
+                    "picture",
+                    models.FileField(
+                        blank=True, upload_to="pictures", verbose_name="photos"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Academicien',
-                'verbose_name_plural': 'Academiciens',
+                "verbose_name": "Academicien",
+                "verbose_name_plural": "Academiciens",
             },
         ),
         migrations.CreateModel(
-            name='Reason',
+            name="Reason",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date_add', models.DateField(auto_now_add=True)),
-                ('date_update', models.DateField(auto_now=True)),
-                ('status', models.BooleanField(default=True)),
-                ('name', models.CharField(max_length=200, unique=True, verbose_name='nom')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date_add", models.DateField(auto_now_add=True)),
+                ("date_update", models.DateField(auto_now=True)),
+                ("status", models.BooleanField(default=True)),
+                (
+                    "name",
+                    models.CharField(max_length=200, unique=True, verbose_name="nom"),
+                ),
             ],
             options={
-                'verbose_name': 'Motif',
-                'verbose_name_plural': 'Motifs',
+                "verbose_name": "Motif",
+                "verbose_name_plural": "Motifs",
             },
         ),
         migrations.CreateModel(
-            name='Payment',
+            name="Payment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date_add', models.DateField(auto_now_add=True)),
-                ('date_update', models.DateField(auto_now=True)),
-                ('status', models.BooleanField(default=True)),
-                ('montant', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('payment_date', models.DateField(auto_now=True)),
-                ('payment_hour', models.TimeField(auto_now=True)),
-                ('academician', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cagnote_app.academician')),
-                ('reason', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cagnote_app.reason')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date_add", models.DateField(auto_now_add=True)),
+                ("date_update", models.DateField(auto_now=True)),
+                ("status", models.BooleanField(default=True)),
+                ("montant", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("payment_date", models.DateField(auto_now=True)),
+                ("payment_hour", models.TimeField(auto_now=True)),
+                (
+                    "academician",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="cagnote_app.academician",
+                    ),
+                ),
+                (
+                    "reason",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="cagnote_app.reason",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'paiement',
+                "verbose_name": "paiement",
             },
         ),
         migrations.AddField(
-            model_name='academician',
-            name='reasons',
-            field=models.ManyToManyField(through='cagnote_app.Payment', to='cagnote_app.Reason', verbose_name='motif'),
+            model_name="academician",
+            name="reasons",
+            field=models.ManyToManyField(
+                through="cagnote_app.Payment",
+                to="cagnote_app.Reason",
+                verbose_name="motif",
+            ),
         ),
     ]
