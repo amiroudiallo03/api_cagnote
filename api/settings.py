@@ -85,7 +85,7 @@ DATABASES = {
         "USER": "ltigoupkhgtpuf",
         "PASSWORD": "82d49c3d490680937460bb0bf04871acb58be299f13c1e56aa9ff3953249f181",
         "HOST": "ec2-52-49-68-244.eu-west-1.compute.amazonaws.com",
-         "PORT": "5432",
+        "PORT": "5432",
 
     }
 }
