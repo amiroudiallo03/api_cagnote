@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-nynd0@l55w3(2(%d(ivw&0h%h2&qibb(ww3o(4op!-1&gd@$5m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://apicagnote.herokuapp.com/"]
 CORS_ALLOWED_ORIGIN = True
 
 # Application definition
