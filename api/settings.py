@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import django_heroku
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,8 @@ SECRET_KEY = "django-insecure-nynd0@l55w3(2(%d(ivw&0h%h2&qibb(ww3o(4op!-1&gd@$5m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.252.196']
+ALLOWED_HOSTS = ["https://apicagnote.herokuapp.com/"]
+
 CORS_ALLOWED_ORIGIN = True
 
 # Application definition
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -78,10 +82,22 @@ WSGI_APPLICATION = "api.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "d3j6i3o1bojl0j",
+        "USER": "ltigoupkhgtpuf",
+        "PASSWORD": "82d49c3d490680937460bb0bf04871acb58be299f13c1e56aa9ff3953249f181",
+        "HOST": "ec2-52-49-68-244.eu-west-1.compute.amazonaws.com",
+        "PORT": "5432",
+
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -119,8 +135,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = "static/"
+MEDIA_URL = '/media/'
 
+STATIC_ROOT = BASE_DIR / 'static_cdn'
+
+MEDIA_ROOT = BASE_DIR / 'media_cdn'
+
+STATICFILES_DIRS = [BASE_DIR /'static']
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+django_heroku.settings(locals())

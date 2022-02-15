@@ -22,3 +22,4 @@ urlpatterns = [
     path("payment/api_caisse/", views.api_caisse, name='money_box'),
     path('academicians/payment/ranking/<int:numbers>/', views.ranking, name='ranking'),
 ]
+ 
