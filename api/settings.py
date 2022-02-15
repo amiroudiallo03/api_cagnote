@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import django_heroku
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,6 +28,7 @@ SECRET_KEY = "django-insecure-nynd0@l55w3(2(%d(ivw&0h%h2&qibb(ww3o(4op!-1&gd@$5m
 DEBUG = True
 
 ALLOWED_HOSTS = ["https://apicagnote.herokuapp.com/"]
+
 CORS_ALLOWED_ORIGIN = True
 
 # Application definition
@@ -144,3 +146,5 @@ STATICFILES_DIRS = [BASE_DIR /'static']
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+django_heroku.settings(locals())
