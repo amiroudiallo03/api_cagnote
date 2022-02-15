@@ -10,6 +10,8 @@ from .serializers import (
     PaymentSerializer,
     CaisseSerializer,
 )
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from . import models
 from datetime import date
 from django.db.models import Q
@@ -26,7 +28,8 @@ def academician_exists(register_number: str):
     except models.Academician.DoesNotExist:
         return False
 
-
+@swagger_auto_schema(methods=['GET'], responses={200: openapi.Response('Renvoie tous les académiciens', AcademicianSerializer)})
+@swagger_auto_schema(methods=['POST'], request_body=AcademicianSerializer, responses={201: openapi.Response('Crée un nouveau académicien')})
 @api_view(["GET", "POST"])
 def api_academiciens(request):
 
@@ -51,6 +54,9 @@ def api_academiciens(request):
     return Response({"message": "bienvenue a oda"})
 
 
+@swagger_auto_schema(methods=['PUT'], request_body=AcademicianSerializer, responses={200: openapi.Response('Modifie un académicien selon son matricule')})
+@swagger_auto_schema(methods=['GET'], responses={200: openapi.Response('Affiche un académicien selon son matricule', AcademicianSerializer)})
+@swagger_auto_schema(methods=['DELETE'], responses={204: openapi.Response('supprime un académicien selon son matricule')})
 @api_view(["GET", "PUT", "DELETE"])
 def api_academician(request, register_number):
 

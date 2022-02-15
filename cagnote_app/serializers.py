@@ -6,7 +6,7 @@ from rest_framework import serializers
 class AcademicianSerializer(serializers.ModelSerializer):
     class Meta:
         model = Academician
-        exclude = ["date_add", "date_update", "status", "overall_payment"]
+        exclude = ["date_add", "date_update", "status"]
         depth = 1
 
 
