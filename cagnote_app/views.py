@@ -151,6 +151,7 @@ def api_caisse(request):
         montant_caisse = sum(box)
         return Response({"montant_caisse": f"{montant_caisse}"})
 
+    return Response({'message':'Solde'})
 
 class ReasonsAPIView(APIView):
     def get(self, request):
