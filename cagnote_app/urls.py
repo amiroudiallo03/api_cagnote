@@ -4,7 +4,7 @@ from . import views
 app_name = 'cagnote_app'
 
 urlpatterns = [
-    path("", views.api_academiciens, name='index'),
+    path("academicians/", views.api_academiciens, name='index'),
     path("reasons/", views.ReasonsAPIView.as_view(), name='reasons'),
     path("reasons/<int:pk>", views.ReasonAPIView.as_view(), name='reason'),
     # path("academicians", views.api_academiciens),
