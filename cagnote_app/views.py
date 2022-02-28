@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
@@ -106,8 +107,8 @@ def api_payment(request):
 
             # academicien = models.Academician.objects.get(register_number=matricule)
             motif_id = request.data.get("reason")
-            reason = models.Reason.objects.filter(id=motif_id)
-            if not models.Reason.objects.filter(id=motif_id).exists():
+            reason = models.Reason.objects.filter(name=motif_id)
+            if not models.Reason.objects.filter(name=motif_id).exists():
                 message = "Motif inexistant"
                 return Response({"message": message, "success": success})
             # if models.Payment.objects.filter(academician=academicien).exists():
@@ -115,7 +116,7 @@ def api_payment(request):
             #    return Response({"message":message, "success": success})
             else:
                 try:
-                    motif = models.Reason.objects.get(id=motif_id)
+                    motif = models.Reason.objects.get(name=motif_id)
                     pay = models.Payment.objects.create(
                         academician=academicien,
                         reason=motif,

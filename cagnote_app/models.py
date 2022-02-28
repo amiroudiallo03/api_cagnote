@@ -38,7 +38,7 @@ class Academician(Base):
     overall_payment = models.PositiveIntegerField(
         default=0, 
         blank=True,
-        null=True,
+        null=True, 
         verbose_name='paiement total',
         editable=False
         )
@@ -79,7 +79,7 @@ def update_academician_overall_payment(instance, created, **kwargs):
         academician = instance.academician
         total = sum([p.montant for p in academician.payments.all()])
         academician.overall_payment=total
-        academician.save()
+        academician.save() 
     else:
         academician = instance.academician
         total = sum([p.montant for p in academician.payments.all()])
